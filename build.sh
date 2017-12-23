@@ -16,7 +16,7 @@ export CROSS_COMPILE=${HOME}/android/uberbuild/out/aarch64-linux-android-4.9/bin
 DEFCONFIG="rey_defconfig"
 
 # Kernel Details
-VER=".R2"
+VER=".R2-LOS"
 
 # Paths
 KERNEL_DIR=`pwd`
