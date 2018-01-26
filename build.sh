@@ -19,7 +19,7 @@ export CROSS_COMPILE=${HOME}/android/uberbuild/out/aarch64-linux-android-4.9/bin
 DEFCONFIG="mata_defconfig"
 
 # Kernel Details
-VER=".R0"
+VER=".R1-CUST"
 
 # Paths
 KERNEL_DIR=`pwd`
