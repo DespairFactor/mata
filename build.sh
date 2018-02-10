@@ -12,22 +12,22 @@ clear
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image"
 DTBIMAGE="dtb"
-export CLANG_PATH=~/android/clang/clang-4479392/bin/
+export CLANG_PATH=~/android/clang/clang-4053586/bin/
 export PATH=${CLANG_PATH}:${PATH}
 export CLANG_TRIPLE=aarch64-linux-gnu-
 export CROSS_COMPILE=${HOME}/android/uberbuild/out/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-DEFCONFIG="rey_defconfig"
+DEFCONFIG="mata_defconfig"
 
 # Kernel Details
-VER=".R3"
+VER=".R4"
 
 # Paths
 KERNEL_DIR=`pwd`
-REPACK_DIR="${HOME}/android/AK-OnePone-AnyKernel2"
-PATCH_DIR="${HOME}/android/AK-OnePone-AnyKernel2/patch"
-MODULES_DIR="${HOME}/android/AK-OnePone-AnyKernel2/modules"
+REPACK_DIR="${HOME}/android/AnyKernel2"
+PATCH_DIR="${HOME}/android/AnyKernel2/patch"
+MODULES_DIR="${HOME}/android/AnyKernel2/modules/vendor/lib/modules"
 ZIP_MOVE="${HOME}/android/AK-releases"
-ZIMAGE_DIR="${HOME}/android/mata/arch/arm64/boot/"
+ZIMAGE_DIR="${HOME}/android/mata/out/arch/arm64/boot"
 
 # Functions
 function clean_all {
@@ -38,13 +38,13 @@ function clean_all {
 		git clean -f -d > /dev/null 2>&1
 		cd $KERNEL_DIR
 		echo
-		make clean && make mrproper
+		rm -rf out
 }
 
 function make_kernel {
 		echo
-		make CC=clang $DEFCONFIG
-		make CC=clang -j10
+		make O=out CC=clang $DEFCONFIG
+		make O=out CC=clang -j10
 
 }
 
@@ -63,7 +63,7 @@ function make_boot {
 
 
 function make_zip {
-		cd ~/android/AnyKernel2
+		cd ~/android/AnyKernel2/
 		zip -r9 `echo $AK_VER`.zip *
 		mv  `echo $AK_VER`.zip $ZIP_MOVE
 		cd $KERNEL_DIR
@@ -87,7 +87,7 @@ export LOCALVERSION=~`echo $AK_VER`
 export LOCALVERSION=~`echo $AK_VER`
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_BUILD_USER=DespairFactor
+export KBUILD_BUILD_USER=matthewdalex
 export KBUILD_BUILD_HOST=DarkRoom
 
 echo
@@ -122,7 +122,7 @@ case "$dchoice" in
 		make_dtb
 		make_modules
 		make_boot
-		make_zip
+        make_zip
 		break
 		;;
 	n|N )
