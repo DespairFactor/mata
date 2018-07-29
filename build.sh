@@ -12,17 +12,21 @@ clear
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image"
 DTBIMAGE="dtb"
-export CROSS_COMPILE=${HOME}/android/uberbuild/out/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-DEFCONFIG="mata_defconfig"
+export CLANG_PATH=~/android/clang/clang-r328903/bin/
+export PATH=${CLANG_PATH}:${PATH}
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CROSS_COMPILE=${HOME}/android/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+export CROSS_COMPILE_ARM32=${HOME}/android/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+DEFCONFIG="rey_defconfig"
 
 # Kernel Details
 VER=".R0"
 
 # Paths
 KERNEL_DIR=`pwd`
-REPACK_DIR="${HOME}/android/AK-OnePone-AnyKernel2"
-PATCH_DIR="${HOME}/android/AK-OnePone-AnyKernel2/patch"
-MODULES_DIR="${HOME}/android/AK-OnePone-AnyKernel2/modules"
+REPACK_DIR="${HOME}/android/AnyKernel2"
+PATCH_DIR="${HOME}/android/AnyKernel2/patch"
+MODULES_DIR="${HOME}/android/AnyKernel2/modules"
 ZIP_MOVE="${HOME}/android/AK-releases"
 ZIMAGE_DIR="${HOME}/android/mata/arch/arm64/boot/"
 
@@ -40,8 +44,8 @@ function clean_all {
 
 function make_kernel {
 		echo
-		make $DEFCONFIG
-		make $THREAD
+		make CC=clang O=out $DEFCONFIG
+		make CC=clang O=out $THREAD
 
 }
 
@@ -55,12 +59,12 @@ function make_dtb {
 }
 
 function make_boot {
-		cp -vr $ZIMAGE_DIR/Image.gz-dtb ~/android/mata/out/zImage
+		cp -vr ~/android/mata/out/arch/arm64/boot/Image.gz-dtb ~/android/AnyKernel2/zImage
 }
 
 
 function make_zip {
-		cd ~/android/mata/out
+		cd ~/android/AnyKernel2
 		zip -r9 `echo $AK_VER`.zip *
 		mv  `echo $AK_VER`.zip $ZIP_MOVE
 		cd $KERNEL_DIR
@@ -72,7 +76,7 @@ DATE_START=$(date +"%s")
 
 echo -e "${green}"
 echo "-----------------"
-echo "Making Rey Kernel:"
+echo "Making Kernel:"
 echo "-----------------"
 echo -e "${restore}"
 
@@ -84,7 +88,7 @@ export LOCALVERSION=~`echo $AK_VER`
 export LOCALVERSION=~`echo $AK_VER`
 export ARCH=arm64
 export SUBARCH=arm64
-export KBUILD_BUILD_USER=DespairFactor
+export KBUILD_BUILD_USER=matthewdalex
 export KBUILD_BUILD_HOST=DarkRoom
 
 echo
@@ -144,3 +148,4 @@ DATE_END=$(date +"%s")
 DIFF=$(($DATE_END - $DATE_START))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo
+
