@@ -18,7 +18,7 @@ export CROSS_COMPILE_ARM32=${HOME}/android/arm-linux-androideabi-4.9/bin/arm-lin
 DEFCONFIG="mata_defconfig"
 
 # Kernel Details
-VER=".V0"
+VER=".V1"
 
 # Paths
 KERNEL_DIR=`pwd`
